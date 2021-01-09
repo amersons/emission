@@ -51,10 +51,9 @@ func (emitter *Emitter) AddListener(event, listener interface{}) *Emitter {
 			emitter.recoverer(event, listener, ErrNoneFunction)
 		}
 	}
-
 	if emitter.maxListeners != -1 && emitter.maxListeners < len(emitter.events[event])+1 {
-		fmt.Fprintf(os.Stdout, "Warning: event `%v` has exceeded the maximum "+
-			"number of listeners of %d.\n", event, emitter.maxListeners)
+		_, _ = fmt.Fprintf(os.Stdout, "Warning: event `%v` has exceeded the maximum "+
+			"number of listeners of %d. len %d \n", event, emitter.maxListeners, len(emitter.events[event])+1)
 	}
 
 	emitter.events[event] = append(emitter.events[event], fn)
