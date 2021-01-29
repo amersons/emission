@@ -66,6 +66,19 @@ func (emitter *Emitter) On(event, listener interface{}) *Emitter {
 	return emitter.AddListener(event, listener)
 }
 
+//Clear events  onces
+func (emitter *Emitter) ClearAllListener() *Emitter {
+	emitter.Lock()
+	defer emitter.Unlock()
+	if len(emitter.events) > 0 {
+		emitter.events = make(map[interface{}][]reflect.Value)
+	}
+	if len(emitter.onces) > 0 {
+		emitter.onces = make(map[reflect.Value]reflect.Value)
+	}
+	return emitter
+}
+
 // RemoveListener removes the listener argument from the event arguments slice
 // in the Emitter's events map.  If the reflect Value of the listener does not
 // have a Kind of Func then RemoveListener panics. If a RecoveryListener has

@@ -59,6 +59,20 @@ func TestEmitWithMultipleListeners(t *testing.T) {
 	}
 }
 
+func TestRemoveAllListener(t *testing.T) {
+	event := "test"
+	listener := func() {}
+	listener2 := func() {}
+	listener3 := func() {}
+
+	emitter := NewEmitter().
+		AddListener(event, listener).Once(event, listener3).
+		AddListener(event, listener2).ClearAllListener()
+	if 0 != len(emitter.events[event]) {
+		t.Error("Failed to remove listener from the emitter.")
+	}
+}
+
 func TestRemoveListener(t *testing.T) {
 	event := "test"
 	listener := func() {}
